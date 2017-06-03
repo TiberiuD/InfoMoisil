@@ -1,0 +1,157 @@
+{% extends "index.twig" %}
+
+{% 
+set errorCodes = {
+	20: 'Eroare de transmitere a formularului!',
+	21: 'Nu ați completat numele de utilizator!',
+	22: 'Nu ați completat numele real!',
+	23: 'Nu ați completat parola!',
+	24: 'Nu ați completat adresa de email!',
+	25: 'Numele de utilizator este prea lung!',
+	26: 'Numele real este prea lung!',
+	27: 'Adresa de email introdusă este deja în uz!',
+	28: 'Adresa de email introdusă este incorectă!',
+} 
+%}
+
+{% block title %}Înregistrare{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="container">
+			<div class="col m12 l9">
+				<h1 class="red-text">Înregistrare</h1>
+				<p>Procesul de creare a unui cont este extraordinar de simplu!
+				Trebuie doar să introduceți datele dumneavoastră mai jos, după 
+				care să apăsați butonul <strong>Înregistrare</strong>. Nu uitați
+				că <span class="red-text text-darken-2">toate câmpurile sunt
+				obligatorii!</span><p>
+				
+				{% if RegisterStatus is defined %}
+					{% if RegisterStatus == "OK" %}
+						<div class="card horizontal green darken-3">
+							<div class="card-stacked">
+								<div class="card-content white-text">
+									<span class="card-title">Înregistrare efectuată!</span>
+									<p>Înregistrarea dumneavoastră a avut succes! Acum vă puteți conecta pe website din secțiunea de autentificare!</p>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<div class="card horizontal red darken-3">
+							<div class="card-stacked">
+								<div class="card-content white-text">
+									<span class="card-title">Înregistrare eșuată!</span>
+									<p><strong>Nu am putut duce înregistrarea dumneavoastră la bun sfârșit fiindcă</strong>:</p>
+									<ul>
+										{% for Error in RegisterErrorArray %}
+											<li>{{ errorCodes[Error] }}</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% else %}
+					<h4>Condiții de utilizare</h4>
+					<p class="red-text text-darken-3">Da, știm că treceți cu vederea aceste condiții când vă
+					vă înregistrați pe alte site-uri, dar prin apăsarea butonului
+					<strong>Înregistrare</strong> veți fi de acord cu acestea, 
+					așadar vă recomandăm să le citiți. Nu vă vom fura mai mult de 30
+					de secunde, promitem!</p>
+					
+					<ul class="collection">
+						<li class="collection-item avatar">
+							<i class="material-icons circle red">flag</i>
+							<span class="title">Limbaj adecvat</span>
+							<p>Fără limbaj licențios, violent, rasist, sau
+							<a href="https://dexonline.ro/definitie/indignare" target="_blank">cauzator de indignare</a>.<br>
+							Ne dorim un mediu plăcut pentru oricine!</p>
+						</li>
+						<li class="collection-item avatar">
+							<i class="material-icons circle orange">report_problem</i>
+							<span class="title">Abuzul de erori de sistem este interzis sub orice formă.</span>
+							<p>Dacă găsiți vreo problemă, aduceți-ne-o la cunoștință.<br>
+							Poate vă răsplătim!</p>
+						</li>
+						<li class="collection-item avatar">
+							<i class="material-icons circle blue">share</i>
+							<span class="title">Împărtășiți idei, nu coduri sursă!</span>
+							<p>Mai degrabă ajutați-i pe ceilalți explicând o problemă, nu oferind soluția pe tavă.<br>
+							Puteți scrie un articol!</p>
+						</li>
+						<li class="collection-item avatar">
+							<i class="material-icons circle green">visibility_off</i>
+							<span class="title">Garantăm securitatea</span>
+							<p>Vă garantăm că datele dumneavoastră personale nu vor fi făcute publice.<br>
+							Parolele dumneavoastră sunt sigure, datorită unor 
+							<a href="https://en.wikipedia.org/wiki/Hash_function" target="_blank">algoritmi ingenioși.</a></p>
+						</li>
+						<li class="collection-item avatar">
+							<i class="material-icons circle red">lock</i>
+							<span class="title">Pedepse</span>
+							<p>Nerespectarea celor de mai sus se poate solda cu mustrare.<br>
+							Sau blocarea contului, temporară sau permanentă. Noi alegem. Fiți cuminți!</p>
+						</li>
+					</ul>
+				{% endif %}
+				
+				<div class="row">
+					<div class="col s12 m6">
+						<h5>Formular de înregistrare</h5>
+						<form action="?p=register" method="POST">
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="material-icons orange-text prefix">mail</i>
+									<input id="email" name="email" type="email" class="validate">
+									<label for="email">Email</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="material-icons blue-text text-darken-2 prefix">lock</i>
+									<input id="password" name="password" type="password" class="validate">
+									<label for="password">Parolă</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="material-icons green-text text-darken-2 prefix">account_circle</i>
+									<input id="name" name="name" type="text" class="validate">
+									<label for="name">Nume real</label>
+								</div>
+							</div>
+							<button class="btn green waves-effect waves-light" type="submit" name="registerForm">Înregistrare
+								<i class="material-icons right">send</i>
+							</button>
+						</form>
+					</div>
+					<div class="col m6 s12">
+						<div class="card green darken-3">
+							<div class="card-content white-text">
+								<span class="card-title">Mici indicații</span>
+								<p>
+									Vă recomandăm (nu vă impunem!) să urmați cât mai multe dintre următoarele sfaturi:
+									<ul>
+										<li>Adresa de email să fie reală. Aceasta va fi folosită pentru serviciul Gravatar.</li>
+										<hr>
+										<li>Parola să aibă minim 8 caractere, cifre, majuscule și minuscule.</li>
+										<hr>
+										<li>Nu folosi aceeași parolă în mai multe locuri!</li>
+										<hr>
+										<li>Folosește numele real, te reprezintă!</li>
+									</ul>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col m12 l3">
+				{% include "sidebar.twig" %}
+			</div>
+			
+			<br>
+			<br>
+		</div>
+	</div>
+{% endblock %}

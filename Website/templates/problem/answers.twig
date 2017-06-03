@@ -1,0 +1,131 @@
+{% include "problem/snippets/summary.twig" %}
+
+<h3 class="light-blue-text text-darken-3">Toate soluțiile</h3>
+
+{% if problemSolutionCount == 0 %}
+	<div class="card-panel blue">
+		<span class="white-text">Nu a fost trimisă nicio soluție pentru această problemă.</span>
+	</div>
+{% else %}
+	<p class="left-align">Se afișează rezultatele <strong>{{ problemSolutionsShowStart }}</strong>-<strong>{{ problemSolutionsShowEnd }}</strong> din <strong>{{ problemSolutionCount }}</strong>, ordonate de la cele mai recente la cele mai vechi.</p>
+	<table class="responsive-table centered striped">
+		<thead>
+			<tr>
+				<th data-field="id">ID</th>
+				<th data-field="datetime">Data încărcării</th>
+				<th data-field="user">Utilizator</th>
+				<th data-field="job">Evaluare</th>
+				<th data-field="score">Punctaj</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for solution in problemSolutions %}
+				{% if solution['score'] == -1 %}
+					{% set color = 'blue-grey' %}
+				{% elseif solution['score'] == 0 %}
+					{% set color = 'red' %}
+				{% elseif solution['score'] > 0 and solution['score'] < 20 %}
+					{% set color = 'indigo' %}
+				{% elseif solution['score'] >= 20 and solution['score'] < 40 %}
+					{% set color = 'deep-orange' %}
+				{% elseif solution['score'] >= 40 and solution['score'] < 60 %}
+					{% set color = 'orange darken-2' %}
+				{% elseif solution['score'] >= 60 and solution['score'] < 80 %}
+					{% set color = 'orange' %}
+				{% elseif solution['score'] >= 80 and solution['score'] < 90 %}
+					{% set color = 'green lighten-2' %}
+				{% elseif solution['score'] >= 90 and solution['score'] < 100 %}
+					{% set color = 'green' %}
+				{% elseif solution['score'] == 100 %}
+					{% set color = 'green darken-4' %}
+				{% endif %}
+
+				<tr>
+					<td>{{ solution['id'] }}</td>
+					<td>{{ solution['send_time']|date("d.m.Y H:i") }}</td>
+					<td>
+					<img src="{{ solution['user_avatar'] }}" style="width: 35px; margin-right: 10px; vertical-align: middle;" class="circle responsive-img" />
+					{{ solution['user_name'] }}
+					</td>
+					{% if solution['done'] %}
+						<td>
+							<a class="waves-effect waves-light btn {{ color }}"
+								href="?p=problem&id={{ problemID }}&action=viewsolution&solutionid={{ solution['id'] }}">
+								<i class="material-icons left">dashboard</i> Detalii
+							</a>
+						</td>
+						<td>
+							<div class="chip {{ color }}">
+								<span class="white-text">
+									{% if solution['score'] >= 0 and solution['score'] <= 100 %}
+										{{ solution['score'] }}
+									{% else %}
+										E
+									{% endif %}
+								</span>
+							</div>
+						</td>
+					{% else %}
+						<td>
+							<span style="display:inline-block;">
+								<div class="valign-wrapper">
+									<div class="preloader-wrapper small active valign">
+										<div class="spinner-layer spinner-green-only">
+											<div class="circle-clipper left">
+												<div class="circle"></div>
+											</div>
+											<div class="gap-patch">
+												<div class="circle"></div>
+											</div>
+											<div class="circle-clipper right">
+												<div class="circle"></div>
+											</div>
+										</div>
+									</div>
+													&nbsp;&nbsp;&nbsp;
+							<div class="valign">În curs de evaluare</div>
+								</div>
+							</span>
+						</td>
+						<td></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<ul class="pagination">
+		{% if problemSolutionCurrentPage == 1 %}
+			<li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+		{% else %}
+			<li class="waves-effect">
+				<a href="?p=problem&id={{ problemID }}&action=answers&page={{ problemSolutionCurrentPage - 1 }}">
+					<i class="material-icons">chevron_left</i>
+				</a>
+			</li>
+		{% endif %}
+		
+		{% for i in range(1, problemSolutionPageCount) %}
+			{% if i == problemSolutionCurrentPage %}
+				<li class="active">
+					<a href="?p=problem&id={{ problemID }}&action=answers&page={{ i }}">{{ i }}</a>
+				</li>
+			{% else %}
+				<li class="waves-effect">
+					<a href="?p=problem&id={{ problemID }}&action=answers&page={{ i }}">{{ i }}</a>
+				</li>
+			{% endif %}
+		{% endfor %}
+
+		{% if problemSolutionCurrentPage == problemSolutionPageCount %}
+			<li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+		{% else %}
+			<li class="waves-effect">
+				<a href="?p=problem&id={{ problemID }}&action=answers&page={{ problemSolutionCurrentPage + 1 }}">
+					<i class="material-icons">chevron_right</i>
+				</a>
+			</li>
+		{% endif %}
+	</ul>
+{% endif %}

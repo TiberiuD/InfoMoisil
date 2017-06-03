@@ -1,0 +1,169 @@
+{% include "problem/snippets/summary.twig" %}
+
+{% if not problemVisible %}
+	<div class="card-panel orange">
+		<span class="white-text">Această problemă nu este publicată momentan!</span>
+	</div>
+{% endif %}
+
+{% autoescape false %}
+	<h3 class="light-blue-text text-darken-3">Enunț</h3>
+	{{ problemText['statement'] }}
+
+	<div class="row">
+		<div class="col s12 m6">
+			<h4 class="light-blue-text text-darken-3">Date de intrare</h4>
+			{{ problemText['input'] }}
+		</div>
+		<div class="col s12 m6">
+			<h4 class="light-blue-text text-darken-3">Date de ieșire</h4>
+			{{ problemText['output'] }}
+		</div>
+	</div>
+
+	<h4 class="light-blue-text text-darken-3">Precizări</h4>
+	{{ problemText['notes'] }}
+
+	<h4 class="light-blue-text text-darken-3">Exemplu</h4>
+	<div class="row">
+		<div class="col s12 m6">
+			<div class="card blue-grey darken-1">
+				<div class="card-content white-text">
+					{% if problemInfo['IOMethod'] == 'file' %}
+						<span class="card-title">Intrare ({{ problemInfo['cleanName'] }}.in)</span>
+					{% else %}
+						<span class="card-title">Intrare</span>
+					{% endif %}
+					<p><code>{{ problemText['exampleInput'] }}</code></p>
+				</div>
+			</div>
+		</div>
+		<div class="col s12 m6">
+			<div class="card blue-grey darken-1">
+				<div class="card-content white-text">
+					{% if problemInfo['IOMethod'] == 'file' %}
+						<span class="card-title">Ieșire ({{ problemInfo['cleanName'] }}.out)</span>
+					{% else %}
+						<span class="card-title">Ieșire</span>
+					{% endif %}
+					<p><code>{{ problemText['exampleOutput'] }}</code></p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endautoescape %}
+
+<div class="divider"></div>
+
+<h3 class="light-blue-text text-darken-4">Soluții</h3>
+{% if LoggedIn %}
+	{% if problemSolutionCount > 0 %}
+		{% if problemMaxScore == -1 %}
+			<div class="card-panel blue-grey">
+				<span class="white-text">Soluția ta nu a putut fi compilată pentru evaluare.</span>
+			</div>
+		{% elseif problemMaxScore == 0 %}
+			<div class="card-panel red">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore > 0 and problemMaxScore < 20 %}
+			<div class="card-panel indigo">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore >= 20 and problemMaxScore < 40 %}
+			<div class="card-panel deep-orange">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore >= 40 and problemMaxScore < 60 %}
+			<div class="card-panel orange darken-2">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore >= 60 and problemMaxScore < 80 %}
+			<div class="card-panel orange">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore >= 80 and problemMaxScore < 90 %}
+			<div class="card-panel green lighten-2">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore >= 90 and problemMaxScore < 100 %}
+			<div class="card-panel green">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% elseif problemMaxScore == 100 %}
+			<div class="card-panel green darken-4">
+				<span class="white-text">Ai obținut {{ problemMaxScore }} puncte pe această problemă.</span>
+			</div>
+		{% endif %}
+		
+		{% if problemMaxScore != 100 %}
+			<div class="right-align">
+				<a href="#">
+					<small>
+						<i class="material-icons blue-text text-darken-3" style="font-size: 18px; display: inline-flex; vertical-align: middle;">help</i> 
+						Greșeli des întâlnite
+					</small>
+				</a>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	<div class="row">
+		<div class="col s12 m6">
+			{% if problemSolutionCount == 0 %}
+				<p>Nu ai trimis nicio soluție pentru această problemă.</p>
+			{% else %}
+				{% if problemSolutionCount == 1 %}
+					{% set solutionText = "soluție evaluată" %}
+				{% else %}
+					{% set solutionText = "soluții evaluate" %}
+				{% endif %}
+				
+				<p>Ai trimis 
+				<strong>{{ problemSolutionDoneCount }}</strong>
+				{{ solutionText }} pentru această problemă.</p>
+				
+				{% if problemMaxScore != 100 %}
+				<p>
+					Dacă nu reușești să rezolvi problema, poți debloca
+					teste de evaluare sau soluția oficială folosind <a href="#">puncte</a>.
+				</p>
+				{% endif %}
+			{% endif %}
+			
+			<p>Apasă butonul de mai jos pentru a vedea toate soluțiile trimise de tine, inclusiv cele care nu au fost evaluate.</p>
+			
+			<a href="?p=problem&id={{ problemID }}&action=myanswers" class="orange darken-4 waves-effect waves-light btn"><i class="material-icons left">code</i>Soluțiile tale</a>
+		</div>
+		<div class="col s12 m6">
+			<p>Această problemă a fost rezolvată corect de <strong>308</strong>
+			din <strong>314</strong> utilizatori, cu un număr mediu de <strong>1,24</strong> încercări.</p>
+			
+			<p>Statistic, această problemă este <strong>ușoară</strong>.</p>
+			<a href="?p=problem&id={{ problemID }}&action=answers" class="indigo darken-4 waves-effect waves-light btn"><i class="material-icons left">code</i>Toate soluțiile</a>
+		</div>
+	</div>
+	<div class="divider"></div>
+	<div class="row">
+		<div class="col s12 m8 offset-m4">
+			<h3 class="light-blue-text text-darken-4">Trimite o soluție</h3>
+			{% include "problem/snippets/solutionform.twig" %}
+		</div>
+	</div>
+{% else %}
+	<div class="row">
+		<div class="col s12 m6">
+			<p>Această problemă a fost rezolvată corect de <strong>308</strong>
+			din <strong>314</strong> utilizatori, cu un număr mediu de <strong>1,24</strong> încercări.</p>
+			
+			<p>Statistic, această problemă este <strong>ușoară</strong>.</p>
+			<a href="?p=problem&id={{ problemID }}&action=answers" class="indigo darken-4 waves-effect waves-light btn"><i class="material-icons left">code</i>Toate soluțiile</a>
+		</div>
+	</div>
+{% endif %}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1.0" name="viewport">
+		<meta content="#B71C1C" name="theme-color">
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		
+		<title>{% block title %}{% endblock %} - {{ WebsiteInfo.title }}</title>
+		
+		<!-- CSS  -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="css/materialize.css" media="screen,projection" rel="stylesheet" type="text/css">
+		<link href="css/style.css" media="screen,projection" rel="stylesheet" type="text/css">
+		
+		<!--  Scripts -->
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script> 
+		<script src="js/materialize.min.js"></script> 
+		<script src="js/init.js"></script>
+		<script src="ckeditor/ckeditor.js"></script>
+		{% if LoggedIn %}
+			<script src="js/notifications.js"></script>
+		{% endif %}
+	</head>
+	<body>
+		<div class="navbar-fixed">
+			<nav class="red darken-1" role="navigation">
+				<div class="nav-wrapper container">
+					<a class="brand-logo" href="?p=index" id="logo-container">InfoMoisil</a>
+					<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+					<ul class="right hide-on-med-and-down">
+
+						<li>
+							<a id="toggle-search" href="#!"><i class="material-icons">search</i></a>
+						</li>
+						{% if not LoggedIn %}
+							<li>
+								<a data-target="loginModal" class="darken-2">
+									Conectare <i class="material-icons right">account_circle</i>
+								</a>
+							</li>
+							<li>
+								<a class="darken-2" href="?p=register">
+									Înregistrare <i class="material-icons right">supervisor_account</i>
+								</a>
+							</li>
+						{% else %}
+							<li>
+								<a id="toggle-notifications" data-target="modal1" href="#!"><i id="notificationBell" class="material-icons">notifications</i></a>
+							</li>
+							<!-- Dropdown Trigger -->
+							<li>
+								<a id="userMenuButton" class="dropdown-button" data-activates="userMenu" href="#!">
+									<img src="{{ avatarURL }}" style="width: 35px; margin-right: 10px; vertical-align: middle;" class="circle responsive-img" />
+									{{ Session.name }} <i class="material-icons right">arrow_drop_down</i>
+								</a>
+							</li>
+							<!-- Dropdown Structure -->
+							<ul class="dropdown-content" id="userMenu">
+								<li>
+									<a href="?p=account">Informații cont</a>
+								</li>
+								<li>
+									<a href="?p=account&settings">
+										Puncte
+										<span style="float: right !important;" class="new badge red" data-badge-caption="puncte">{{ Session.coins }}</span>
+									</a>
+								</li>
+								<li>
+									<a href="?p=account&settings">Setări cont</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="?logout">Deconectare</a>
+								</li>
+							</ul>
+							
+						{% endif %}
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<ul class="side-nav" id="nav-mobile">
+			<li>
+				<div class="userView">
+					<div class="background blue darken-3">
+						{#<img src="img/computer-science.jpg">#}
+					</div>
+					{% if LoggedIn %}
+						<a{# href="#!user"#}><img class="circle" src="{{ avatarURL }}"></a>
+						<a{# href="#!name"#}><span class="white-text name">{{ Session.name }}</span></a>
+						<a{# href="#!email"#}><span class="white-text email">{{ Session.email }}</span></a>
+					{% else %}
+						<a{# href="#!user"#}><img class="circle" src="{{ avatarURL }}"></a>
+						<a{# href="#!name"#}><span class="white-text name">Utilizator neconectat</span></a>
+						&nbsp;
+					{% endif %}
+				</div>
+			</li>
+			<li>
+				<form action="/" method="GET">
+					<input name="p" value="viewsolutions" type="hidden">
+					<input name="filter" id="search" type="search" placeholder="Caută pe site">
+				</form>
+			</li>
+
+
+			<li><div class="divider"></div></li>
+				{% if not LoggedIn %}
+				<li>
+					<a data-target="loginModal" href="#">Conectare</a>
+				</li>
+				<li>
+					<a href="?p=register">Înregistrare</a>
+				</li>
+			{% else %}
+				<li>
+					<a href="?p=problem&id=1">
+						Notificări <span class="new badge yellow darken-2" data-badge-caption="notificări">3</span>
+					</a>
+				</li>
+				<li>
+					<a href="?p=account&settings">Puncte <span class="new badge red" data-badge-caption="puncte">{{ Session.coins }}</span></a>
+				</li>
+				
+				<li><div class="divider"></div></li>
+
+				<li class="no-padding">
+					<ul class="collapsible collapsible-accordion">
+					<li>
+						<a class="collapsible-header">Cont <i class="material-icons">arrow_drop_down</i></a>
+						<div class="collapsible-body">
+							<ul>
+								<li><a href="#!">Informații cont</a></li>
+								<li><a href="#!">Setări cont</a></li>
+								<li class="divider"></li>
+								<li><a href="?logout">Deconectare</a></li>
+							</ul>
+						</div>
+					</li>
+					</ul>
+				</li>
+			{% endif %}
+		</ul>
+					
+		<!-- Search box -->
+		<nav id="search-bar" class="red lighten-1 flat hide-on-med-and-down">
+			<div class="nav-wrapper container">
+				<form>
+					<div class="input-field">
+						<input id="search" type="search" placeholder="Caută pe site" required>
+						<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+						<i class="material-icons">close</i>
+					</div>
+				</form>
+			</div>
+		</nav>
+		<!-- Modal Structure -->
+		<div id="loginModal" class="modal">
+			<form action="?p=account" method="POST">
+				<div class="modal-content">
+					<h2 class="center-align">Conectare</h2>
+					
+					<div class="divider"></div>
+					
+					<div class="row">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">email</i>
+							<label for="icon_prefix">Adresă de e-mail</label>
+							<input id="icon_prefix" name="email" type="email" class="validate" length="30" required>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">lock_open</i>
+							<label for="icon_password">Parolă</label>
+							<input id="icon_password" name="password" type="password" class="validate" length="30" required>
+						</div>
+					</div>
+					<div class="input-field">
+						<input type="checkbox" id="filled-in-box" checked="checked">
+						<label for="filled-in-box">Ține-mă minte</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn-flat waves-effect waves-green" type="submit" name="loginForm">Conectare
+						<i class="material-icons right">send</i>
+					</button>
+					<a href="#" class="btn-flat waves-effect waves-red modal-action modal-close">Anulare</a>
+				</div>
+			</form>
+		</div>
+		
+		  <!-- Modal Structure -->
+<div id="modal1" class="modal bottom-sheet">
+	<div class="modal-content">
+		<h4>Notificări</h4>
+
+		<ul id="notificationArea" class="collection">
+			{#
+			<li class="collection-item avatar">
+				<i class="material-icons circle">payment</i>
+				<span class="title">Plată efectuată</span>
+				<p><small>DB05 BNEP 0610 7421 5212 15</small><br>
+				10 monede adăugate</p>
+				<a href="#!" class="secondary-content"><i class="material-icons">check</i></a>
+			</li>
+			<li class="collection-item avatar">
+				<i class="material-icons circle green">check</i>
+				<span class="title">Ai rezolvat problema Suma!</span>
+				<p>Soluția ta a fost evaluată cu 100 puncte.</p>
+				<a href="#!" class="secondary-content"><i class="material-icons">check</i></a>
+			</li>
+			#}
+		</ul>
+	</div>
+    <div class="modal-footer">
+		<a id="readAllNotifications" onclick="readAllNotifications()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Am citit tot!</a>
+	</div>
+</div>
+		
+		<main>
+			{% block content %}{% endblock %}
+		</main>
+		
+		<footer class="page-footer blue-grey">
+			<div class="container">
+				<div class="row">
+					<div class="col l6 s12">
+						<h5 class="white-text">
+							InfoMoisil
+						</h5>
+						<p class="grey-text text-lighten-4">
+							Intră în lumea informaticii cu ajutorul unei comunități primitoare, unde vei fi binevenit și te vei simți minunat pentru a învăța capitole noi din această minunată lume.
+						</p>
+					</div>
+					
+					{#
+					<div class="col l3 s12">
+						<h5 class="white-text">
+							Settings
+						</h5>
+						<ul>
+							<li>
+								<a class="white-text" href="#!">Link 1</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 2</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 3</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 4</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col l3 s12">
+						<h5 class="white-text">
+							Connect
+						</h5>
+						<ul>
+							<li>
+								<a class="white-text" href="#!">Link 1</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 2</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 3</a>
+							</li>
+							<li>
+								<a class="white-text" href="#!">Link 4</a>
+							</li>
+						</ul>
+					</div>
+					#}
+				</div>
+			</div>
+			<div class="footer-copyright">
+				<div class="container">
+					&copy;{{ "now"|date("Y") }} InfoMoisil. Website realizat folosind
+					<a class="yellow-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+					și alt software open-source.
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

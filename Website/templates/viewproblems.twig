@@ -1,0 +1,81 @@
+{% extends "index.twig" %}
+	
+{% block title %}Toate problemele{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="container">
+			<div class="col m12 l9">
+<h3 class="light-blue-text text-darken-3">Toate problemele</h3>
+
+{% if problemsCount == 0 %}
+	<div class="card-panel blue">
+		<span class="white-text">Nu a fost găsită nicio problemă.</span>
+	</div>
+{% else %}
+	<p class="left-align">Se afișează rezultatele <strong>{{ problemsShowStart }}</strong>-<strong>{{ problemsShowEnd }}</strong> din <strong>{{ problemsCount }}</strong>, ordonate de la cele mai recente la cele mai vechi.</p>
+	<table class="responsive-table centered striped">
+		<thead>
+			<tr>
+				<th data-field="id">ID</th>
+				<th data-field="name">Nume</th>
+				<th data-field="author">Autor</th>
+				<th data-field="go">Vezi</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for problem in problems %}
+				<tr>
+					<td>{{ problem['id'] }}</td>
+					<td>{{ problem['name'] }}</td>
+					<td>{{ problem['author'] }}</td>
+					<td><a href="?p=problem&id={{ problem['id'] }}" class="orange darken-4 waves-effect waves-light btn"><i class="material-icons left">code</i>Vezi problema</a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<ul class="pagination">
+		{% if problemsCurrentPage == 1 %}
+			<li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+		{% else %}
+			<li class="waves-effect">
+				<a href="?p=viewproblems&page={{ problemsCurrentPage - 1 }}">
+					<i class="material-icons">chevron_left</i>
+				</a>
+			</li>
+		{% endif %}
+		
+		{% for i in range(1, problemsPageCount) %}
+			{% if i == problemsCurrentPage %}
+				<li class="active">
+					<a href="?p=viewproblems&page={{ i }}">{{ i }}</a>
+				</li>
+			{% else %}
+				<li class="waves-effect">
+					<a href="?p=viewproblems&id={{ problemID }}&action=answers&page={{ i }}">{{ i }}</a>
+				</li>
+			{% endif %}
+		{% endfor %}
+
+		{% if problemsCurrentPage == problemSolutionPageCount %}
+			<li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+		{% else %}
+			<li class="waves-effect">
+				<a href="?p=viewproblems&page={{ problemsCurrentPage + 1 }}">
+					<i class="material-icons">chevron_right</i>
+				</a>
+			</li>
+		{% endif %}
+	</ul>
+{% endif %}
+			</div>
+			<div class="col m12 l3">
+				{% include "sidebar.twig" %}
+			</div>
+			
+			<br>
+			<br>
+		</div>
+	</div>
+{% endblock %}

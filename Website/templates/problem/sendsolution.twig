@@ -1,0 +1,42 @@
+{% include "problem/snippets/summary.twig" %}
+
+<h3 class="light-blue-text text-darken-4">Trimite o soluție</h3>
+
+{% if fileSent is defined %}
+	{% if sendError is defined %}
+		<div class="card red darken-4">
+			<div class="card-content white-text">
+				<span class="card-title">Eroare la trimiterea soluției</span>
+				<p>
+					Cod de eroare {{ uploadErrorCode }}
+					{% if uploadError is defined %}
+						<br>
+						<strong>Informații suplimentare:</strong> {{ uploadError }}
+					{% endif %}
+				</p>
+			</div>
+		</div>
+	{% else %}
+		<div class="card green darken-2">
+			<div class="card-content white-text">
+				<span class="card-title">Soluție încărcată cu succes!</span>
+				<p>
+					Soluția a fost încărcată cu ID-ul <code>{{ solutionID }}</code>!
+				</p>
+			</div>
+			<div class="card-action">
+				<a href="?p=problem&id={{ problemID }}&action=viewsolution&solutionid={{ solutionID }}">Vezi detaliile evaluării</a>
+			</div>
+		</div>
+	{% endif %}
+{% endif %}
+
+{% if not fileSent is defined or sendError is defined %}
+	{% include "problem/snippets/solutionform.twig" %}
+{% endif %}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>

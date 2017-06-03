@@ -1,0 +1,87 @@
+{% extends "index.twig" %}
+
+{% block title %}Articol{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col m12 l9">
+			<h1 class="red-text">Articol</h1>
+<p>Orice program prelucreaza date. Acestea se afla în memoria&nbsp;RAM&nbsp;a calculatorului, ?i pot fi&nbsp;<strong>variabile</strong>&nbsp;(valoarea datei se poate modifica) sau&nbsp;<strong>constante</strong>&nbsp;(valoarea nu se poate modifica).</p>
+	<h2>Variabile</h2>
+	<p>O&nbsp;<strong>variabila</strong>&nbsp;reprezinta o loca?ie de memorie unde se afla o valoare de un anumit&nbsp;<strong>tip</strong>. Orice variabila este caracterizata de:</p>
+	<ul>
+		<li><strong>adresa variabilei</strong>. Memoria&nbsp;RAM&nbsp;a calculatorului este adresata – fiecare octet (byte) din memorie are asociat un numar de ordine, începând de la&nbsp;<code>0</code>. Acest numar reprezinta adresa acelui byte ?i se afi?eaza implicit în baza&nbsp;<code>16</code>.</li>
+		<li>
+			<strong>identificatorul variabilei</strong>&nbsp;– reprezinta un nume pentru variabila – legatura dintre variabila si adresa ei. Identificatorul respecta urmatoarele reguli:
+			<ul>
+				<li>con?ine litere mari, mici ale alfabetului englez cifre ?i caracterul de subliniere&nbsp;<code>'_'</code>&nbsp;– underline. Literele mari sunt considerate diferite de cele mici, astfel ca&nbsp;<code>Raspuns</code>,&nbsp;<code>raspuns</code>&nbsp;?i&nbsp;<code>RASPUNS</code>&nbsp;reprezinta identificatori diferi?i.</li>
+				<li>primul caracter nu poate fi cifra. De?i este posibil ca un identificator sa înceapa cu&nbsp;<code>'_'</code>, nu este recomandat, pentru a evita anumite conflicte cu identificatori de sistem.</li>
+				<li>nu exista limite legate de lungimea unui identificator, dar numai primele&nbsp;<code>31</code>&nbsp;de caractere sunt semnificative.</li>
+			</ul>
+		</li>
+		<li>tipul variabilei – stabile?te ce fel de valori poate sa ia variabila, între ce limite sunt acestea, precum ?i ce opera?ii pot fi realizate cu variabila.</li>
+		<li>domeniul de vizibilitate. Reprezinta zona din program în care variabila exista ?i poate fi utilizata. Variabilele pot fi globale sau locale.
+			<ul>
+				<li>variabilele locale se declara într-un bloc (între paranteze acolade&nbsp;<code>{...}</code>) ?i sunt vizibile doar în acel bloc. Au valori ini?iale aleatorii.</li>
+				<li>variabilele globale se declara în exteriorul oricarui bloc ?i sunt vizibile în toate blocurile care urmeaza declararii. Sunt ini?ializate cu&nbsp;<code>0</code>.</li>
+			</ul>
+		</li>
+	</ul>
+	<p>În C/C++, variabilele trebuie declarate, precizând tipul ?i identificatorul. Sintaxa este:</p>
+	<p><code>Tip_de_date Lista_identificatori</code> <strong>;</strong></p>
+	<p>unde</p>
+	<p><code>Tip_de_date</code>&nbsp;poate fi orice tip C++ corect, iar&nbsp;<code>Lista_identificatori</code>&nbsp;este alcatuita din cel pu?in un identificator. Daca sunt mai mul?i, se vor separa prin caracterul virgula&nbsp;<code>,</code>.<br></p>
+	<p>S-au declarat doua variabile, cu numele&nbsp;<code>a</code>&nbsp;?i&nbsp;<code>x</code>&nbsp;ce vor putea memora valori numere întregi dintr-un interval pe care îl vom studia mai târziu.</p>
+	<p>Urmatorii identificatori C++ sunt corec?i:&nbsp;<code>a</code>,&nbsp;<code>numar</code>,&nbsp;<code>Numar</code>,&nbsp;<code>alt_numar</code>,&nbsp;<code>a2b</code>,&nbsp;<code>_suma</code>&nbsp;– nerecomandat,&nbsp;<code>un_nume_de_variabila_foarte_lung</code>.</p>
+	<p>Urmatorii identificatori C++ sunt incorec?i:</p>
+	<ul>
+		<li><code>2a</code>&nbsp;– începe cu cifra. Identificatorii pot începe cu litere sau&nbsp;<code>'_'</code></li>
+		<li><code>alt numar</code>&nbsp;– con?ine caracter interzis: spa?iu</li>
+		<li><code>un-numar</code>&nbsp;– contine caracter interzis: minus</li>
+		<li><code>numar</code>&nbsp;– con?ine litera&nbsp;<code>a</code>. Identificatorii pot con?ine numai litere&nbsp;ASCII&nbsp;– din alfabetul englez.</li>
+	</ul>
+	<h2>Constante</h2>
+	<p>Constantele sunt date care nu-?i modifica valoarea în timpul execu?iei programului. Pot fi constante cu nume, sau constante literale, date direct prin valoarea lor.</p>
+	<h3>Constante cu nume</h3>
+	<p>Pot fi precizate prin directiva&nbsp;<code>define</code>. Exemplu:<br></p>
+	<p><code>#define MAX 101</code></p>
+	<p>De asemenea, se pot declara variabile cu modificatorul&nbsp;<code>const</code>, iar valoarea lor nu mai poate fi modificata. Exemplu:</p>
+	<p><code>const</code>&nbsp;<code>int</code>&nbsp;<code>MAX = 101;</code></p>
+	<h3>Literali</h3>
+	<p>Într-un program pot aparea valori constante, fie ca sunt numere, caractere sau ?iruri de caractere. Acestea se mai numesc&nbsp;<strong>literali</strong>.</p>
+	<h4>Constante întregi</h4>
+	<p>Reprezinta numere întregi – fara parte frac?ionara. Pot fi:</p>
+	<ul>
+		<li>Constante zecimale – în baza&nbsp;<code>10</code>&nbsp;:&nbsp;<code>176 -54 0</code>. Pot con?ine cifrele:&nbsp;<code>0 1 2 3 4 5 6 7 8 9</code></li>
+		<li>Constante octale – în baza&nbsp;<code>8</code>&nbsp;:&nbsp;<code>015 062</code>. Pot con?ine cifrele:&nbsp;<code>0 1 2 3 4 5 6 7</code>&nbsp;?i încep întotdeauna cu&nbsp;<code>0</code>.</li>
+		<li>Constante hexazecimale – în baza&nbsp;<code>16</code>&nbsp;:&nbsp;<code>0x15 0x6f 0xff</code>. Pot con?ine cifrele:&nbsp;<code>0 1 2 3 4 5 6 7 8 9 A B C D E F</code>&nbsp;?i încep întotdeauna cu&nbsp;<code>0x</code>.</li>
+	</ul>
+	<h4>Constante reale</h4>
+	<p>Reprezinta numere reale ?i se mai numesc&nbsp;<code>în virgula mobila</code>. Separatorul zecimal este caracterul punct&nbsp;<code>'.'</code>&nbsp;?i pot aparea în doua forme:</p>
+	<ul>
+		<li>scrierea standard:&nbsp;<code>-1.5 14.974</code></li>
+		<li>scrierea ?tiin?ifica, cu&nbsp;<strong>mantisa</strong>&nbsp;?i&nbsp;<strong>exponent</strong>. Numarul&nbsp;<code>-0.567E+2</code>&nbsp;înseamna&nbsp;<code>-0.567*10</code><sup><code>+2</code></sup>, adica&nbsp;<code>-56.7</code>.&nbsp;<code>-0567</code>&nbsp;reprezinta mantisa, iar&nbsp;<code>-2</code>reprezinta exponentul.</li>
+	</ul>
+	<h4>Constante caracter –&nbsp;<code>char</code></h4>
+	<p>Sunt alcatuite dintr-un caracter, delimitat de apostroafe:&nbsp;<code>'</code>. De exemplu:&nbsp;<code>'a' 'B' '~' '?'</code>. O categorie aparte de caractere este data de&nbsp;<strong>secven?ele&nbsp;ESCAPE</strong>. O secven?a escape este alcatuita din doua caractere, dintre care primul este backslash:&nbsp;<code>\</code>. Dintre secven?ele escape amintim:</p>
+	<ul>
+		<li><code>'\b'</code>&nbsp;– Backspace</li>
+		<li><code>'\f'</code>&nbsp;– Form feed</li>
+		<li><code>'\n'</code>&nbsp;– Newline</li>
+		<li><code>'\r'</code>&nbsp;– Return</li>
+		<li><code>'\t'</code>&nbsp;–&nbsp;TAB&nbsp;orizontal</li>
+		<li><code>'\\'</code>&nbsp;– Backslash</li>
+		<li><code>'\''</code>&nbsp;– Apostrof</li>
+		<li><code>'\"'</code>&nbsp;– Ghilimele</li>
+		<li><code>'\?'</code>&nbsp;– Semn de întrebare</li>
+		<li><code>'\0'</code>&nbsp;-Caracterul nul</li>
+	</ul>
+	<h4>Constante ?ir de caractere</h4>
+	<p>Sunt delimitate de ghilimele&nbsp;<code>"</code>. Pot sa con?ina secven?e escape. Exemple:</p>
+	<p><code>"numar"</code>,&nbsp;<code>"n = "</code>,&nbsp;<code>"Am terminat.\n"</code></p></div>
+	
+				<div class="col m12 l3">
+				{% include "sidebar.twig" %}
+			</div>
+	</div></div>	{% endblock %}

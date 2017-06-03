@@ -1,0 +1,27 @@
+<form enctype="multipart/form-data" action="?p=problem&id={{ problemID }}&action=sendsolution" method="POST">
+	<div class="row">
+		<div class="input-field col s12">
+			<select name="language" required>
+				<option value="" disabled{% if Session['preffered_language'] is null %} selected{% endif %}>Alege un limbaj de programare</option>
+				<option value="cpp"{% if Session['preffered_language'] == 'cpp' %} selected{% endif %}>C++</option>
+				<option value="c"{% if Session['preffered_language'] == 'c' %} selected{% endif %}>C</option>
+				<option value="pas"{% if Session['preffered_language'] == 'pas' %} selected{% endif %}>Pascal</option>
+			</select>
+			<label>Limbaj de programare</label>
+		</div>
+		<div class="file-field input-field col s12">
+			<div class="btn">
+				<span>Fișier</span>
+				<input type="file" name="solution">
+			</div>
+			<div class="file-path-wrapper">
+				<input class="file-path validate" type="text" placeholder="Alege fișierul sursă">
+			</div>
+		</div>
+		<div class="col s12 right-align">
+			<button class="btn waves-effect waves-light" type="submit" name="action">Încarcă
+				<i class="material-icons right">file_upload</i>
+			</button>
+		</div>
+	</div>
+</form>

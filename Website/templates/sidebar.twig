@@ -1,0 +1,49 @@
+<!--<h4>Notificări</h4>
+<ul class="collection">
+	<li class="collection-item avatar">
+		<i class="material-icons circle">payment</i>
+		<span class="title">Plată efectuată</span>
+		<p><small>DB05 BNEP 0610 7421 5212 15</small><br>
+		10 monede adăugate</p>
+	</li>
+	<li class="collection-item avatar">
+		<i class="material-icons circle green">check</i>
+		<span class="title">Ai rezolvat problema Suma!</span>
+		<p>Soluția ta a fost evaluată cu 100 puncte.</p>
+	</li>
+	<li class="collection-item avatar">
+		<img src="img/koreah.jpg" alt="" class="circle">
+		<span class="title">Mesaj nou</span>
+		<p><a href="#">Iisus</a> ți-a trimis un mesaj nou!</p>
+		<a href="#!" class="secondary-content"><i class="material-icons">mail</i></a>
+	</li>
+</ul> -->
+
+<ul class="collection with-header">
+	<li class="collection-header"><h5>Sugestii</h5></li>
+	<a href="?p=problem&id=1"><li class="collection-item">Suma</li></a>
+	<a href="?p=problem&id=4"><li class="collection-item">Impar</li></a>
+	<a href="?p=problem&id=3"><li class="collection-item">Media aritmetica</li></a>
+	<a href="?p=problem&id=2"><li class="collection-item">An bisect</li></a>
+	<li class="collection-item">
+		<a href="?p=viewproblems" class="blue darken-4 waves-effect waves-light btn">Toate problemele</a>
+	</li>
+	{% if LoggedIn and Session["rank"] == "admin" %}
+		<li class="collection-item">
+			<a href="?p=newproblem" class="red darken-4 waves-effect waves-light btn">Problemă nouă</a>
+		</li>
+	{% endif %}
+</ul>
+
+<div class="card blue-grey darken-1">
+	<div class="card-image">
+		<img src="img/it-lab.jpg">
+		<span class="card-title">Informatica</span>
+	</div>
+	<div class="card-content white-text">
+		<p>Afla acum despre elementele de baza ale programariii, citind un scurt articol despre C++</p>
+	</div>
+	<div class="card-action">
+		<a href="?p=article">Vizualizare articol</a>
+	</div>
+</div>

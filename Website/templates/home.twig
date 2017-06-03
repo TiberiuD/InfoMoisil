@@ -1,0 +1,112 @@
+{% extends "index.twig" %}
+
+{% block title %}Acasă{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="container">
+			<br>
+			<br>
+			<div class="col m12 l9">		
+				<div id="presentationSlider" class="carousel carousel-slider center z-depth-3" data-indicators="true">
+					<div class="carousel-fixed-item center">
+						<a class="btn waves-effect white grey-text darken-text-2"
+						 href="?p=register">Înregistrează-te</a>
+					</div>
+					<div class="carousel-item red white-text" href="#one!">
+						<h1 class="header center">
+							InfoMoisil
+						</h1>
+						<div class="row center">
+							<h5 class="header col s12 light">
+								Evaluatorul automat de probleme este o unealtă ce<br>
+								implementează tehnologii moderne pentru a ușura<br>
+								experiența de învățare a elevului.
+							</h5>
+						</div>
+					</div>
+					<div class="carousel-item amber white-text" href="#two!">
+						<h2>Prietenos cu elevul</h2>
+						<ul>
+							<li><h5 class="header col s12 light">Probleme structurate după conținut</h5></li>
+							<li><h5 class="header col s12 light">Interfață prietenoasă, ușor de folosit</h5></li>
+							<li><h5 class="header col s12 light">Articole educaționale pe diferite teme</h5></li>
+							<li><h5 class="header col s12 light">Probleme pentru toate nivelurile</h5></li>
+						</ul>
+					</div>
+					<div class="carousel-item green white-text" href="#three!">
+						<h2>Prietenos cu profesorul</h2>
+						<ul>
+							<li><h5 class="header col s12 light">Posibilitatea de a da teme și lucrări</h5></li>
+							<li><h5 class="header col s12 light">Itemi tip problemă sau grilă</h5></li>
+							<li><h5 class="header col s12 light">Privire de ansamblu asupra claselor</h5></li>
+						</ul>
+					</div>
+					<div class="carousel-item blue white-text" href="#four!">
+						<h2>Securitate și eficiență sporită</h2>
+						<h5 class="header col s12 light">
+							Standardele moderne de siguranță asigură o evaluare imparțială,
+							un mediu de lucru proprice pentru liceele din ziua de astăzi, 
+							realizând acest lucru la o viteză de lucru superioară.
+						</h5>
+					</div>
+				</div>
+				
+				<script>
+					$(document).ready(function(){
+						$('#presentationSlider').carousel({fullWidth: true});
+					});
+				</script>
+				<div class="section">
+					<!--   Icon Section   -->
+					<div class="row">
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<h2 class="center red-text">
+									<i class="material-icons">flash_on</i>
+								</h2>
+								<h5 class="center">
+									O nouă experiență
+								</h5>
+								<p class="light">
+									Intră în lumea informaticii cu ajutorul unei comunități primitoare, unde vei fi binevenit și te vei simți minunat pentru a învăța capitole noi din această minunată lume.
+								</p>
+							</div>
+						</div>
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<h2 class="center green-text">
+									<i class="material-icons">group</i>
+								</h2>
+								<h5 class="center">
+									Materie accesibilă
+								</h5>
+								<p class="light">
+									Problemele sunt grupate după capitolele din programele de gimnaziu și liceu. Așadar, indiferent de clasa în care ești, poți învăța informatică extraordinar de ușor!
+								</p>
+							</div>
+						</div>
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<h2 class="center light-blue-text">
+									<i class="material-icons">settings</i>
+								</h2>
+								<h5 class="center">
+									Ușor de folosit
+								</h5>
+								<p class="light">
+									Interfața ușor de folosit asigură o navigare și o utilizare facilă a site-ului.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col m12 l3">
+				{% include "sidebar.twig" %}
+			</div>
+			
+			<br>
+			<br>
+		</div>
+	</div>
+{% endblock %}

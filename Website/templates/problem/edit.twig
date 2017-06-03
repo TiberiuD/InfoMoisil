@@ -1,0 +1,237 @@
+<h1 class="light-blue-text text-darken-4">{{ problemInfo['name'] }}</h1>
+
+<div class="divider"></div>
+<div class="row">
+	<div class="col s12 m6">
+		<h5 class="left-align"><i class="material-icons">mode_edit</i> Mod editare</h5>
+		<div class="card-panel blue">
+			<span class="white-text">
+				<i class="small material-icons left">info_outline</i>
+				În modul editare, poți modifica toți parametrii problemei: timpul maxim de
+				execuție, limita maximă de memorie, metoda de citire/scriere, dar și enunțul,
+				testele la care sunt supuse soluțiile utilizatorilor, și un eventual program
+				de testare, în cazul în care o problemă are mai multe soluții.
+			</span>
+		</div>
+
+		<a href="?p=problem&id={{ problemID }}" class="blue darken-4 waves-effect waves-light btn"><i class="material-icons left">navigate_before</i>Înapoi la problemă</a>
+	</div>
+	<div class="col s12 m6">
+		<h5 class="right-align">Restricții</h5>
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons left blue-text prefix">memory</i>
+					<label class="active" for="max_memory">Limită RAM (MB)</label>
+					<input id="max_memory" name="memory" type="number" value="{{ problemInfo['maxMemory'] }}" step="any" min="0" class="validate" form="editForm">
+				</div> 
+				<div class="input-field col s12">
+					<i class="material-icons left red-text prefix">timer</i>
+					<label class="active" for="max_time">Limită timp (sec)</label>
+					<input id="max_time" name="time" type="number" value="{{ problemInfo['maxTime'] }}" step="any" min="0" class="validate" form="editForm">
+				</div> 
+				<div class="input-field col s12">
+					<i class="material-icons left green-text prefix">input</i>
+					<select id="io_method" name="io" form="editForm">
+						<option value="" disabled>Alege</option>
+						<option value="std"{% if problemInfo['IOMethod'] == 'std' %} selected{% endif %}>Terminal</option>
+						<option value="file"{% if problemInfo['IOMethod'] == 'file' %} selected{% endif %}>Fișiere</option>
+					</select>
+					<label for="io_method">Metodă I/O</label>
+				</div>
+			</div>
+		</ul>
+	</div>
+</div>
+
+{% if not problemVisible %}
+	<div class="card-panel orange">
+		<span class="white-text">Această problemă nu este publicată! Puteți seta dacă problema este public vizibilă sau nu din tab-ul <i>Publicare</i> de mai jos.</span>
+	</div>
+{% endif %}
+
+<div class="divider"></div>
+
+<h4 class="light-blue-text text-darken-3">Salvare</h4>
+<p>
+	Când ești mulțumit cu modificările pe care le-ai efectuat, apasă butonul de mai jos pentru a le salva.
+</p>
+
+<form method="POST" action="?p=problem&id={{ problemID }}&action=edit" id="editForm">
+	<button class="btn indigo waves-effect waves-light" type="submit" name="editForm">
+		<i class="material-icons left">save</i>
+		Salvare modificări
+	</button>
+</form>
+
+<br>
+
+<div class="divider"></div>
+
+<div class="row">
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s3"><a class="active" href="#problem">Enunț</a></li>
+			<li class="tab col s3"><a href="#tests">Teste</a></li>
+			<li class="tab col s3"><a href="#visibility">Publicare</a></li>
+			<li class="tab col s3 disabled"><a href="#test_program">Program de testare</a></li>
+		</ul>
+	</div>
+	<div id="problem" class="col s12">
+		{% autoescape false %}
+			<h3 class="light-blue-text text-darken-3">Enunț</h3>
+			<textarea name="statement" id="statement" contenteditable="true" form="editForm">
+				{{ problemText['statement']|default('Acesta este enunțul problemei. Aici trebuie descrisă în detaliu problema.') }}
+			</textarea>
+
+			<div class="row">
+				<div class="col s12 m6">
+					<h4 class="light-blue-text text-darken-3">Date de intrare</h4>
+					<textarea name="input" id="input" contenteditable="true" form="editForm">
+						{{ problemText['input']|default('Datele de intrare sunt informațiile pe care programul-soluție le va citi.') }}
+					</textarea>
+				</div>
+				<div class="col s12 m6">
+					<h4 class="light-blue-text text-darken-3">Date de ieșire</h4>
+					<textarea name="output" id="output" contenteditable="true" form="editForm">
+						{{ problemText['output']|default('Datele de intrare sunt informațiile pe care programul-soluție le va scrie.') }}
+					</textarea>
+				</div>
+			</div>
+
+			<h4 class="light-blue-text text-darken-3">Precizări</h4>
+			<textarea name="notes" id="notes" contenteditable="true" form="editForm">
+				{{ problemText['notes']|default('Lămuriri despre enunțul problemei') }}
+			</textarea>
+
+			<h4 class="light-blue-text text-darken-3">Exemplu</h4>
+			<div class="row">
+				<div class="col s12 m6">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title">Intrare</span>
+							<code>
+								<textarea name="exampleInput" id="exampleInput" contenteditable="true" form="editForm">
+									{{ problemText['exampleInput']|default('Exemplu pentru datele de intrare') }}
+								</textarea>
+							</code>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m6">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title">Ieșire</span>
+							<code>
+								<textarea name="exampleOutput" id="exampleOutput" contenteditable="true" form="editForm">
+									{{ problemText['exampleOutput']|default('Exemplu pentru datele de ieșire') }}
+								</textarea>
+							</code>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endautoescape %}
+	</div>
+	<div id="tests" class="col s12">
+		<h3>Teste de evaluare</h3>
+		<p>
+			Mai jos puteti adauga, vedea si sterge teste de evaluare.
+		</p>
+		
+		<h5>Teste de evaluare curente</h5>
+		<table class="striped responsive-table">
+			<thead>
+				<tr>
+					<th>Nr.</th>
+					<th>Punctaj</th>
+					<th>Vizualizare test</th>
+					<th>Sterge test</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>50 puncte</td>
+					<td>
+						<a class="waves-effect waves-light btn green"
+							href="?p=problem&id={{ problemID }}&action=viewtest&testid=">
+							<i class="material-icons left">developer_mode</i> Vizualizare test
+						</a>
+					</td>
+					<td>
+						<input type="checkbox" id="delete_1" />
+						<label for="delete_1">Sterge</label>
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>50 puncte</td>
+					<td>
+						<a class="waves-effect waves-light btn green"
+							href="?p=problem&id={{ problemID }}&action=viewtest&testid=">
+							<i class="material-icons left">developer_mode</i> Vizualizare test
+						</a>
+					</td>
+					<td>
+						<input type="checkbox" id="delete_2" />
+						<label for="delete_2">Sterge</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h5>Adauga teste de evaluare</h5>
+		<p>
+			Pentru a adauga un test de evaluare, trebuie sa incarcati
+			o pereche de fisiere cu acelasi nume, cu extensia .in
+			pentru fisierele de intrare, si cu extensia .out pentru
+			fisierele de iesire.
+		</p>
+		<div class="file-field input-field">
+			<div class="btn">
+				<span>File</span>
+				<input type="file" multiple>
+			</div>
+			<div class="file-path-wrapper">
+				<input class="file-path validate" type="text" placeholder="Upload one or more files">
+			</div>
+		</div>
+	</div>
+	
+	<div id="visibility" class="col s12">
+		<h3>Publicare</h3>
+		<p>
+			Mai jos puteți seta dacă problema este public vizibilă sau nu. Toate problemele sunt vizibile pentru administratori.
+		</p>
+		
+		<div class="switch">
+			<label>
+				Ascuns
+				{% if not problemVisible %}
+					<input type="checkbox" name="visible" form="editForm">
+				{% else %}
+					<input type="checkbox" name="visible" form="editForm" checked>
+				{% endif %}
+				<span class="lever"></span>
+				Publicat
+			</label>
+		</div>
+	</div>
+	
+	<div id="test_program" class="col s12">Test 4</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+		
+		CKEDITOR.disableAutoInline = true;
+		CKEDITOR.inline('statement');
+		CKEDITOR.inline('input');
+		CKEDITOR.inline('output');
+		CKEDITOR.inline('notes');
+		CKEDITOR.inline('exampleInput');
+		CKEDITOR.inline('exampleOutput');
+	});	
+</script>

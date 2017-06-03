@@ -1,0 +1,34 @@
+{% extends "index.twig" %}
+
+{% block title %}{{ problemInfo['name'] }}{% endblock %}
+{% block content %}
+	<div class="row">
+		<div class="container">
+			<div class="col s12 l9">
+				{% 
+				set SubPages = [
+					"default",
+					"myanswers",
+					"answers",
+					"edit",
+					"viewsolution",
+					"sendsolution",
+					"viewtest"
+				]
+				%}
+				{% if pageAction in SubPages %}
+					{% include "problem/" ~ pageAction ~ ".twig" %}
+				{% else %}
+					<p>Something went terribly wrong!</p>
+				{% endif %}
+			</div>
+
+			
+			<div class="col s12 l3">
+				<br>
+				<br>
+				{% include "sidebar.twig" %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

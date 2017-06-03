@@ -1,0 +1,166 @@
+{% include "problem/snippets/summary.twig" %}
+
+{% 
+set Language = {
+	'cpp': 'C++',
+	'c': 'C',
+	'pas': 'Pascal',
+} 
+%}
+{% if not solution['done'] %}
+	{% set color = 'blue darken-3' %}
+{% elseif solution['score'] == -1 %}
+	{% set color = 'blue-grey' %}
+{% elseif solution['score'] == 0 %}
+	{% set color = 'red' %}
+{% elseif solution['score'] > 0 and solution['score'] < 20 %}
+	{% set color = 'indigo' %}
+{% elseif solution['score'] >= 20 and solution['score'] < 40 %}
+	{% set color = 'deep-orange' %}
+{% elseif solution['score'] >= 40 and solution['score'] < 60 %}
+	{% set color = 'orange darken-2' %}
+{% elseif solution['score'] >= 60 and solution['score'] < 80 %}
+	{% set color = 'orange' %}
+{% elseif solution['score'] >= 80 and solution['score'] < 90 %}
+	{% set color = 'green lighten-2' %}
+{% elseif solution['score'] >= 90 and solution['score'] < 100 %}
+	{% set color = 'green' %}
+{% elseif solution['score'] == 100 %}
+	{% set color = 'green darken-4' %}
+{% endif %}
+
+<h3 class="light-blue-text text-darken-3">Vizualizare soluție #{{ solutionID }}</h3>
+
+<div class="card {{ color }}">
+	<div class="card-content white-text">
+		{% if not solution['done'] %}
+			<span class="card-title">În curs de evaluare</span>
+			<p>Soluția ta este în coada de evaluare. În scurt timp,
+			aceasta va fi corectată, iar rezultatul va fi afișat pe această pagină.</p>
+		{% elseif solution['score'] == -1 %}
+			<span class="card-title">Eroare de compilare</span>
+			<p>Această soluție nu a putut fi compilată spre evaluare. Mai jos se regăsesc erorile afișate de compilator.</p>
+		{% else %}
+			<span class="card-title">{{ solution['score'] }} puncte</span>
+			<p>Această soluție a fost evaluată cu {{ solution['score'] }} puncte. Mai jos sunt afișate detaliile evaluării.</p>
+		{% endif %}
+
+	</div>
+	<!--
+	<div class="card-action">
+		<a href="#">Doresc reevaluarea soluției</a>
+	</div>
+	-->
+</div>
+
+
+<ul class="collection">
+	<li class="collection-item"><i class="material-icons left blue-text">person</i> Utilizator: <span class="badge">{{ solution['user_name'] }}</span></li>
+	<li class="collection-item">
+		<i class="material-icons left red-text">access_time</i>
+		Ora trimiterii:
+		<span class="badge">{{ solution['send_time']|date("d.m.Y H:i") }}</span>
+	</li>
+	<li class="collection-item"><i class="material-icons left green-text">developer_board</i> Limbaj de programare: <span class="badge">{{ Language[solution['language']]|default('Nedefinit') }}</span></li>
+</ul>
+
+{% if solution['done'] and solution['score'] != -1 %}
+	<h5 class="light-blue-text text-darken-3">Teste de evaluare</h5>
+	
+	{% if solution['solution_tests']|length != 0 %}
+		<table class="bordered responsive-table">
+			<thead>
+				<tr>
+					<th data-field="number">Nr.</th>
+					{% if LoggedIn %}
+						<th data-field="viewtest">Test</th>
+					{% endif %}
+					<th data-field="message">Mesaj</th>
+					<th data-field="memory">Memorie utilizată</th>
+					<th data-field="time">Timp de execuție</th>
+					<th data-field="points">Punctaj</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% 
+				set Status = {
+					'correct': 'Corect',
+					'failed': 'Greșit',
+					'tle': 'Timp de execuție depășit',
+					'mle': 'Limită de memorie depășită',
+				} 
+				%}
+				{% for Test in solution['solution_tests'] %}
+					{% if Test['status'] == 'correct' %}
+						{% set TestColor = 'green-text' %}
+					{% else %}
+						{% set TestColor = 'red-text' %}
+					{% endif %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						{% if LoggedIn %}
+							<td>
+								<a class="waves-effect waves-light btn green"
+									href="?p=problem&id={{ problemID }}&action=viewtest&testid={{ Test['problem_test_id'] }}">
+									Vezi test
+								</a>
+							</td>
+						{% endif %}
+						<td class="{{ TestColor }} text-darken-3">
+							{% if not Test['message'] is empty %}
+								{{ Test['message'] }}
+							{% else %}
+								{{ Status[Test['status']]|default('Mesaj nedefinit!') }}
+							{% endif %}
+						</td>
+						<td>
+							{% if Test['status'] == 'mle' %}
+								<span class="red-text text-darken-3">Depășită</span>
+							{% elseif Test['memory_used'] is empty %}
+								Nedefinită
+							{% else %}
+								{{ Test['memory_used'] }} MB
+							{% endif %}
+						</td>
+						<td>
+							{% if Test['status'] == 'tle' %}
+								<span class="red-text text-darken-3">Depășit</span>
+							{% elseif Test['execution_time'] is empty %}
+								Nedefinit
+							{% else %}
+								{{ Test['execution_time'] }} s
+							{% endif %}
+						</td>
+						<td class="{{ TestColor }} text-darken-3">
+							{% if Test['status'] == 'correct' %}
+								{{ Test['points'] }} p
+							{% else %}
+								0 p
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p>Rezultatul testelor de evaluare nu este disponibil pentru această problemă.</p>
+	{% endif %}
+{% endif %}
+
+{% if solution['compiler_message'] is not empty %}
+	<h5 class="light-blue-text text-darken-3">Mesaj compilator</h5>
+	<p>În timpul compilării, compilatorul a afișat următorul mesaj:</p>
+
+	<div class="black card">
+		<div class="card-content white-text">
+			<code>{{ solution['compiler_message']|nl2br }}</code>
+		</div>
+	</div>
+{% endif %}
+
+{#
+<h5 class="light-blue-text text-darken-3">Fișier sursă</h5>
+<p>Dacă dorești să modifici ceva la soluția ta, poți descărca de aici fișierul sursă trimis.</p>
+<a class="waves-effect waves-light red btn"><i class="material-icons left">file_download</i> Descarcă fișier sursă</a>
+#}

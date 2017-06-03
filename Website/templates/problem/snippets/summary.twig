@@ -1,0 +1,49 @@
+{% 
+set IOMethod = {
+	'std': 'Terminal',
+	'file': 'Fișiere',
+} 
+%}
+
+<span><h1 class="light-blue-text text-darken-4">{{ problemInfo['name'] }}</h1>
+
+<div class="divider"></div>
+<div class="row">
+	<div class="col s12 m6">
+		<h5 class="left-align">Restricții</h5>
+		<ul class="collection">
+		  <li class="collection-item"><i class="material-icons left blue-text">memory</i> Limită RAM: <span class="badge">{{ problemInfo['maxMemory'] }} MB</span></li>
+		  <li class="collection-item"><i class="material-icons left red-text">timer</i> Limită timp: <span class="badge">{{ problemInfo['maxTime'] }} sec.</span></li>
+		  <li class="collection-item"><i class="material-icons left green-text">input</i> Metodă I/O: <span class="badge">{{ IOMethod[problemInfo['IOMethod']]|default('Nedefinit') }}</span></li>
+		</ul>
+	</div>
+	<div class="col s12 m6">
+		<h5 class="right-align">Informații</h5>
+		<ul class="collection">
+		  <li class="collection-item"><i class="material-icons left orange-text">code</i> Număr problemă: <span class="badge">{{ problemID }}</span></li>
+		  <li class="collection-item"><i class="material-icons left deep-purple-text">polymer</i> Nume sistem: <span class="badge">{{ problemInfo['cleanName'] }}</span></li>
+		  <li class="collection-item"><i class="material-icons left light-blue-text text-darken-4">perm_identity</i> Autor: <span class="badge">{{ problemInfo['author'] }}</span></li>
+		</ul>
+	</div>
+	<div class="col s12 m6">
+		
+			<a href="#">
+				<small>
+					<i class="material-icons blue-text text-darken-3" style="font-size: 18px; display: inline-flex; vertical-align: middle;">help</i> 
+					Ce reprezintă acestea?
+				</small>
+			</a>
+		
+	</div>
+	<div class="col s12 m6">
+			{% if pageAction == "default" %}
+				{% if problemEditPermission %}
+				<a href="?p=problem&id={{ problemID }}&action=edit" class="blue darken-4 waves-effect waves-light btn"><i class="material-icons left">edit</i>Editează</a>
+				{% endif %}
+			{% else %}
+				<a href="?p=problem&id={{ problemID }}" class="blue darken-4 waves-effect waves-light btn"><i class="material-icons left">navigate_before</i>Înapoi la problemă</a>
+			{% endif %}
+
+	</div>
+</div>
+<div class="divider"></div>
