@@ -1,24 +1,148 @@
-<!--<h4>Notificări</h4>
-<ul class="collection">
-	<li class="collection-item avatar">
-		<i class="material-icons circle">payment</i>
-		<span class="title">Plată efectuată</span>
-		<p><small>DB05 BNEP 0610 7421 5212 15</small><br>
-		10 monede adăugate</p>
-	</li>
-	<li class="collection-item avatar">
-		<i class="material-icons circle green">check</i>
-		<span class="title">Ai rezolvat problema Suma!</span>
-		<p>Soluția ta a fost evaluată cu 100 puncte.</p>
-	</li>
-	<li class="collection-item avatar">
-		<img src="img/koreah.jpg" alt="" class="circle">
-		<span class="title">Mesaj nou</span>
-		<p><a href="#">Iisus</a> ți-a trimis un mesaj nou!</p>
-		<a href="#!" class="secondary-content"><i class="material-icons">mail</i></a>
-	</li>
-</ul> -->
+{% if LoggedIn and Session["rank"] == "admin" %}
+    <ul class="collection with-header z-depth-3">
+        <li class="purple darken-3 white-text collection-header"><h4><i class="material-icons">build</i> Administrare</h4></li>
+        <li class="collection-item">
+            <a href="?p=newproblem" class="purple waves-effect waves-light btn">Problemă nouă</a>
+        </li>
+        <li class="collection-item">
+            <a href="" class="purple waves-effect waves-light btn">Vezi categorii</a>
+        </li>
+    </ul>
+{% endif %}
 
+{% if LoggedIn and IsTeacher %}
+    <ul class="collection with-header z-depth-3">
+        <li class="blue darken-3 white-text collection-header"><h4><i class="material-icons">school</i> Profesor</h4></li>
+        <li class="collection-item">
+            <a href="?p=account/class" class="blue waves-effect waves-light btn">Clasele mele</a>
+        </li>
+        <li class="collection-item">
+            <a href="" class="blue waves-effect waves-light btn">Dă o temă</a>
+        </li>
+    </ul>
+{% endif %}
+
+{% if LoggedIn %}
+    {% for Homework in UnpublishedHomeworks %}
+        <ul class="collection with-header z-depth-3">
+            <li class="blue lighten-1 white-text collection-header">
+                <h5><i class="material-icons">edit</i> Temă în editare</h5>
+            </li>
+
+            <li class="blue lighten-2 white-text collection-item">Nume: <span class="white-text badge">{{ Homework.Name }}</span></li>
+            <li class="blue lighten-2 white-text collection-item">Clasa: <span class="white-text badge">{{ Homework.ClassName }}</span></li>
+
+            {% set AddProblem = true %}
+
+            {% for Problem in Homework.Problems %}
+                {% if (problemID is defined) and (Problem.ID == problemID) %}
+                    {% set AddProblem = false %}
+                {% endif %}
+
+                <a href="?p=problem&id={{ Problem.ID }}">
+                    <li class="collection-item">
+                        {{ Problem.Name }}
+                        <a href="?p=class&id={{ Homework.ClassID }}&action=homework&homeworkID={{ Homework.ID }}&deleteproblem={{ Problem.ID }}" class="secondary-content">
+                            <i class="red-text material-icons">delete_forever</i>
+                        </a>
+                    </li>
+                </a>
+            {% endfor %}
+
+            {% if (problemID is defined) and (AddProblem) %}
+                <li class="collection-item">
+                    <a href="?p=class&id={{ Homework.ClassID }}&action=homework&homeworkID={{ Homework.ID }}&addproblem={{ problemID }}" class="blue darken-4 waves-effect waves-light btn">
+                        Adaugă problema #{{ problemID }}
+                    </a>
+                </li>
+            {% endif %}
+            <li class="collection-item">
+                <a href="?p=class&id={{ Homework.ClassID }}&action=homework&homeworkID={{ Homework.ID }}&publish" class="green darken-4 waves-effect waves-light btn">
+                    Publică tema
+                </a>
+            </li>
+        </ul>
+    {% endfor %}
+{% endif %}
+
+{% if LoggedIn %}
+    {% for Homework in Homeworks %}
+        {# the colour should be green on solved homeworks, icon should be done_all #}
+        <ul class="collection with-header z-depth-3">
+            <li class="blue darken-2 white-text collection-header">
+                <h5><i class="material-icons">assignment</i> Temă</h5>
+            </li>
+
+            <li class="blue white-text collection-item">Nume: <span class="white-text badge">{{ Homework.Name }}</span></li>
+            <li class="blue white-text collection-item">Clasa: <span class="white-text badge">{{ Homework.ClassName }}</span></li>
+            <li class="blue white-text collection-item">Termen limită: <span class="white-text badge">{{ Homework.Deadline }}</span></li>
+
+            {% for Problem in Homework.Problems %}
+                <a href="?p=problem&id={{ Problem.ID }}">
+                    <li class="collection-item">
+                        {{ Problem.Name }}
+                        {% if Problem.Solutions != 0 %}
+                            {% if Problem.Solved %}
+                                <div class="secondary-content"><i class="green-text material-icons">done</i></div>
+                            {% else %}
+                                <div class="secondary-content"><i class="red-text material-icons">close</i></div>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                </a>
+            {% endfor %}
+
+            <li class="collection-item">
+                <a href="" class="blue darken-4 waves-effect waves-light btn">Detalii temă</a>
+            </li>
+        </ul>
+    {% endfor %}
+{% endif %}
+
+{#
+Partially solved homework template
+<ul class="collection with-header z-depth-3">
+	<li class="orange darken-2 white-text collection-header">
+        <h5><i class="material-icons">done</i> Temă</h5>
+    </li>
+
+    <li class="orange white-text collection-item">Nume: <span class="white-text badge">Algoritmi de bază</span></li>
+    <li class="orange white-text collection-item">Termen limită: <span class="white-text badge">28 iulie 2017</span></li>
+
+	<a href="?p=problem&id=1">
+        <li class="collection-item">
+            Suma
+            <div class="secondary-content"><i class="green-text material-icons">done</i></div>
+        </li>
+    </a>
+
+    <a href="?p=problem&id=2">
+        <li class="collection-item">
+            Pandele
+            <div class="secondary-content"><i class="red-text material-icons">close</i></div>
+        </li>
+    </a>
+
+    <a href="?p=problem&id=3">
+        <li class="collection-item">
+            Vasile
+            <div class="secondary-content"><i class="green-text material-icons">done</i></div>
+        </li>
+    </a>
+
+    <a href="?p=problem&id=4">
+        <li class="collection-item">
+            Ana are mere
+            <div class="secondary-content"><i class="red-text material-icons">close</i></div>
+        </li>
+    </a>
+
+    <li class="collection-item">
+		<a href="" class="orange darken-4 waves-effect waves-light btn">Detalii temă</a>
+	</li>
+</ul>
+
+#}
 <ul class="collection with-header">
 	<li class="collection-header"><h5>Sugestii</h5></li>
 	<a href="?p=problem&id=1"><li class="collection-item">Suma</li></a>
@@ -28,12 +152,9 @@
 	<li class="collection-item">
 		<a href="?p=viewproblems" class="blue darken-4 waves-effect waves-light btn">Toate problemele</a>
 	</li>
-	{% if LoggedIn and Session["rank"] == "admin" %}
-		<li class="collection-item">
-			<a href="?p=newproblem" class="red darken-4 waves-effect waves-light btn">Problemă nouă</a>
-		</li>
-	{% endif %}
 </ul>
+
+
 
 <div class="card blue-grey darken-1">
 	<div class="card-image">

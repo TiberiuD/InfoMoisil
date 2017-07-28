@@ -1,0 +1,30 @@
+{% include "class/snippets/header.twig" %}
+
+<h3>Temele clasei</h3>
+<table class="responsive-table centered striped">
+    <thead>
+    <tr>
+        <th data-field="id">ID</th>
+        <th data-field="name">Nume</th>
+        <th data-field="deadline">Termen limită</th>
+        <th data-field="status">Stare</th>
+        <th data-field="go">Vezi</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for Homework in HomeworkInfo %}
+        <tr>
+            <td>{{ Homework.ID }}</td>
+            <td>{{ Homework.Name }}</td>
+            <td>{{ Homework.Deadline|date('d.m.Y') }}</td>
+            {% if Homework.Status == 'published' %}
+                <td>Publicată</td>
+            {% else %}
+                <td>Nepublicată</td>
+            {% endif %}
+            <td><a href="?p=class&id={{ ClassID }}&action=homework&homeworkID={{ Homework.ID }}" class="green darken-4 waves-effect waves-light btn"><i class="material-icons left">assignment</i>Vezi tema</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

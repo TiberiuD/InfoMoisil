@@ -1,0 +1,19 @@
+{% extends "account/main.twig" %}
+
+{% block AccountTitle %}Contul meu{% endblock %}
+
+{% block AccountContent %}
+    <div class="col s12 l6">
+        <div class="collection">
+            <a class="collection-item"><i class="material-icons left red-text">group</i> Membru din: <span class="badge">16 ianuarie 2015</span></a>
+            <a href="#" class="collection-item"><i class="material-icons left amber-text">grade</i> Exerciții rezolvate: <span class="badge">4</span></a>
+            <a href="#" class="collection-item"><i class="material-icons left indigo-text">info</i> Fără notificări</a>
+        </div>
+    </div>
+    <div class="col s12 l6">
+        <div class="collection">
+            <a class="collection-item"><i class="material-icons left red-text">star</i> Monede: <span class="badge">{{ Session.coins }}</span></a>
+            <a href="#" class="collection-item"><i class="material-icons left amber-text">subject</i> Articole scrise: <span class="badge">1</span></a>
+        </div>
+    </div>
+{% endblock %}

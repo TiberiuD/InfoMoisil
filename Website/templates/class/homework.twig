@@ -1,0 +1,80 @@
+{% include "class/snippets/header.twig" %}
+
+<h3>Vizualizare temă - {{ HomeworkName }}</h3>
+
+{% if ActionSuccessful is defined %}
+    <div class="card green darken-4">
+        <div class="card-content white-text">
+            <span class="card-title"><i class="material-icons">done</i> Actiune incheiata cu succes!</span>
+            <p>
+                Actiunea administrativa a fost efectuata cu succes. Acesta este un mesaj temporar si nu trebuie
+                sa ajunga in etapa de productie.
+            </p>
+        </div>
+    </div>
+{% endif %}
+
+<ul class="collection with-header z-depth-3">
+    <li class="blue darken-2 white-text collection-header">
+        <h5><i class="material-icons">assignment</i> Probleme</h5>
+    </li>
+
+    {% for Problem in HomeworkProblems %}
+        <a href="?p=problem&id={{ Problem.ID }}">
+            <li class="collection-item">
+                {{ Problem.Name }}
+                {% if Problem.Solutions != 0 %}
+                    {% if Problem.Solved %}
+                        <div class="secondary-content"><i class="green-text material-icons">done</i></div>
+                    {% else %}
+                        <div class="secondary-content"><i class="red-text material-icons">close</i></div>
+                    {% endif %}
+                {% endif %}
+            </li>
+        </a>
+    {% endfor %}
+</ul>
+{% if ClassManagePermission and HomeworkStatus == "unpublished" %}
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card purple darken-4">
+                <div class="card-content white-text">
+                    <span class="card-title"><i class="material-icons">assignment</i> Publică tema</span>
+                    <p>
+                        Tema este momentan nepublicată. Apasă butonul de mai jos pentru a o publica.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="?p=class&id={{ ClassID }}&action=homework&homeworkID={{ HomeworkID }}&publish">Publică tema</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<h4>Situatia temei</h4>
+<table class="responsive-table centered striped">
+    <thead>
+    <tr>
+        <th data-field="studentName">Nume</th>
+        {% for Problem in HomeworkProblems %}
+            <th data-field="{{ Problem.ID }}">{{ Problem.Name }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+
+    <tbody>
+        {% for Member in MemberInfo %}
+            <tr>
+                <td>{{ Member.Name }}</td>
+                {% for Score in Member.Scores %}
+                    {% if Score == -1 %}
+                        <td>E</td>
+                    {% else %}
+                        <td>{{ Score }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

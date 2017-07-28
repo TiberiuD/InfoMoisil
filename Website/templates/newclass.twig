@@ -1,0 +1,91 @@
+{% extends "index.twig" %}
+
+{%
+set errorCodes = {
+81: 'Nu ați completat numele clasei!',
+82: 'Numele problemei este prea lung!',
+80: 'Eroare de transmitere a formularului!',
+}
+%}
+
+{% block title %}Clasă nouă{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="container">
+            <div class="col m12 l9">
+                <h1 class="red-text">Clasă nouă</h1>
+                <p>
+                    Ca profesor, o clasă îți permite să dai elevilor tăi teme și să supraveghezi felul
+                    în care aceștia o rezolvă. O unealtă foarte bună, care poate asigura un efort
+                    constant de lucru, elementar în buna învățare a elevului.
+                </p>
+
+                {% if CreateStatus is defined %}
+                    {% if CreateStatus == "OK" %}
+                        <div class="card horizontal green darken-3">
+                            <div class="card-stacked">
+                                <div class="card-content white-text">
+                                    <span class="card-title">Clasă creată!</span>
+                                    <p>
+                                        Clasa a fost creată cu succes! Partajează codul de acces de mai jos cu cei
+                                        pe care vrei să îi adaugi în clasă.
+                                    </p>
+                                    <h4 class="center-align">
+                                        {{ ClassAccessKey }}
+                                    </h4>
+                                </div>
+                                <div class="card-action">
+                                    <a href="?p=class&id={{ ClassID }}">Vezi clasă</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card horizontal red darken-3">
+                            <div class="card-stacked">
+                                <div class="card-content white-text">
+                                    <span class="card-title">Creare eșuată!</span>
+                                    <p><strong>Nu am putut crea clasa deoarece</strong>:</p>
+                                    <ul>
+                                        {% for Error in CreateErrorArray %}
+                                            <li>{{ errorCodes[Error] }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if (not CreateStatus is defined) or ((CreateStatus is defined) and CreateStatus != "OK")  %}
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <div class="cyan lighten-5 card">
+                                <div class="card-content">
+                                    <span class="card-title">Creează o clasă nouă</span>
+                                    <p>Introdu un nume pentru clasa ta. Acesta poate fi modificat ulterior.</p>
+                                    <form action="?p=newclass" method="POST">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <i class="material-icons orange-text prefix">label_outline</i>
+                                                <input id="name" name="name" type="text" class="validate">
+                                                <label for="name">Nume</label>
+                                            </div>
+                                        </div>
+                                        <button class="btn green waves-effect waves-light" type="submit" name="newClassForm">Continuă
+                                            <i class="material-icons right">send</i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col m12 l3">
+                {% include "sidebar.twig" %}
+            </div>
+        <br>
+        <br>
+        </div>
+    </div>
+{% endblock %}

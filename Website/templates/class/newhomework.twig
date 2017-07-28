@@ -1,0 +1,44 @@
+{% include "class/snippets/header.twig" %}
+
+{%
+set errorCodes = {
+101: 'Eroare de transmitere a formularului!',
+102: 'Nu ați completat numele temei!',
+103: 'Numele temei este prea lung!',
+104: 'Nu ați completat data limită!',
+}
+%}
+
+{% if CreateStatus is defined %}
+    {% if CreateStatus == "OK" %}
+        <div class="card horizontal green darken-3">
+            <div class="card-stacked">
+                <div class="card-content white-text">
+                    <span class="card-title">Temă creată!</span>
+                    <p>
+                        Tema a fost creată cu succes! Pentru a adăuga probleme, navighează pe pagina
+                        unei probleme și apasă pe butonul de adăugare din partea dreaptă a paginii, in
+                        dreptul temei corespunzătoare.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="?p=explore">Vezi probleme</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card horizontal red darken-3">
+            <div class="card-stacked">
+                <div class="card-content white-text">
+                    <span class="card-title">Creare eșuată!</span>
+                    <p><strong>Nu am putut crea tema deoarece</strong>:</p>
+                    <ul>
+                        {% for Error in CreateErrorArray %}
+                            <li>{{ errorCodes[Error] }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

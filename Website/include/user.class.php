@@ -325,7 +325,43 @@
 				throw new Exception('The number of updated rows is not 1: ' . $stmt -> affected_rows);			
 			
 			$stmt -> close();
-			
-			return $notificationArray;
 		}
+
+		public function getAuthToken() {
+            if(!$this -> IsConnected)
+                throw new Exception('User not connected!');
+
+            $stmt = $this -> DBCon -> stmt_init();
+
+            $stmt -> prepare('
+				INSERT INTO `authentication_tokens`
+					(
+						`user_id`,
+						`token`,
+						`expire_date`
+					)
+					VALUES
+					(
+						?,
+						?,
+						NOW() + INTERVAL 1 MONTH
+					)
+			');
+
+            $RandomToken = md5(uniqid('', true));
+
+            if(!$stmt -> bind_param('is', $this->UserID, $RandomToken))
+                throw new Exception('MySQL parameter bind error ' . $stmt -> errno . ': ' . $stmt -> error);
+
+            if(!$stmt -> execute())
+                throw new Exception('MySQL error ' . $stmt -> errno . ': ' . $stmt -> error);
+
+            if($stmt -> affected_rows != 1)
+                throw new Exception('The number of inserted rows is not 1: ' . $stmt -> affected_rows);
+
+            $stmt -> close();
+
+            return $RandomToken;
+        }
 	}
+

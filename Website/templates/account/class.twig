@@ -1,0 +1,84 @@
+{% extends "account/main.twig" %}
+
+{% block AccountTitle %}Clasele mele{% endblock %}
+
+{% block AccountContent %}
+    {% if not UserClasses is empty %}
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+                <h4>Clasele mele</h4>
+
+                <table class="responsive-table centered striped">
+                    <thead>
+                    <tr>
+                        <th data-field="name">Nume clasă</th>
+                        <th data-field="go">Opțiuni</th>
+                        <th data-field="go">Administrare</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for Class in UserClasses %}
+                        <tr>
+                            {% if Class.Status == "teacher" %}
+                                <td><i class="material-icons">school</i> {{ Class.Name }}</td>
+                            {% else %}
+                                <td>{{ Class.Name }}</td>
+                            {% endif %}
+                            <td>
+                                <a href="?p=class&id={{ Class.ID }}" class="red darken-4 waves-effect waves-light btn">Privire generală</a>
+                                <a href="?p=class&id={{ Class.ID }}&action=viewhomeworks" class="green darken-4 waves-effect waves-light btn">Teme</a>
+                                <a href="?p=class&id={{ Class.ID }}&action=members" class="orange darken-4 waves-effect waves-light btn">Colegi</a>
+                            </td>
+                            <td>
+                                <a href="?p=class&id={{ Class.ID }}&action=quit" class="red darken-4 waves-effect waves-light btn">Ieși</a>
+                                {#
+                                {% if Class.Status == "teacher" %}
+                                    <a href="?p=class&id={{ Class.ID }}&action=teachers" class="blue darken-4 waves-effect waves-light btn">Profesori</a>
+                                    <a href="?p=class&id={{ Class.ID }}&action=admin" class="purple darken-4 waves-effect waves-light btn">Administrare</a>
+                                {% endif %}
+                                #}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+    {% endif %}
+
+    <h4>E timpul pentru o nouă clasă?</h4>
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card amber darken-4">
+                <div class="card-content white-text">
+                    <span class="card-title"><i class="material-icons">school</i> Sunt un profesor</span>
+                    <p>
+                        Doriți să creați un grup de lucru pentru o clasă? Apăsați pe butonul de mai jos și
+                        urmați instrucțiunele. Veți primi un cod unic de acces pentru elevi, pe care aceștia
+                        îl pot introduce pentru a se alătura.
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a class="white-text" href="?p=newclass">Creează o clasă nouă</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="card green darken-4">
+                <div class="card-content white-text">
+                    <span class="card-title"><i class="material-icons">mood</i> Sunt un elev</span>
+                    <p>
+                        Cineva te-a invitat într-o clasă și ai codul de acces? Introdu-l aici pentru
+                        a te alătura clasei. Vei putea să primești teme și să te întreci cu colegii tăi!
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="?p=joinclass">Alătură-te unei clase</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

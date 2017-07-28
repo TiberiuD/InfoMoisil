@@ -256,25 +256,41 @@
 			);
 		}
 		
-		public function getUserSolutionStats($UserID) {
+		public function getUserSolutionStats($UserID, $TimeLimit = 0) {
 			if(empty($this -> ProblemID))
 				throw new Exception('Problem ID not set!');
 			
 			// TODO: check if user exists and throw an error
 			
 			$stmt = $this -> DBCon -> stmt_init();
+
+			if(!empty($TimeLimit)) {
+                $stmt->prepare('
+                    SELECT	COUNT(`id`),
+                            COUNT(CASE `done` WHEN 1 THEN 1 ELSE NULL END),
+                            MAX(`score`)
+                    FROM	`jobs` 
+                    WHERE	`user_id` = ?
+                    AND		`problem_id` = ?
+                    AND     `send_time` < FROM_UNIXTIME(?)
+                ');
+                if(!$stmt -> bind_param('iii', $UserID, $this -> ProblemID, $TimeLimit))
+                    throw new Exception('MySQL parameter bind error ' . $stmt -> errno . ': ' . $stmt -> error);
+            } else {
+                $stmt->prepare('
+                    SELECT	COUNT(`id`),
+                            COUNT(CASE `done` WHEN 1 THEN 1 ELSE NULL END),
+                            MAX(`score`)
+                    FROM	`jobs` 
+                    WHERE	`user_id` = ?
+                    AND		`problem_id` = ?
+                ');
+
+                if(!$stmt -> bind_param('ii', $UserID, $this -> ProblemID))
+                    throw new Exception('MySQL parameter bind error ' . $stmt -> errno . ': ' . $stmt -> error);
+            }
 			
-			$stmt -> prepare('
-				SELECT	COUNT(`id`),
-						COUNT(case `done` when 1 then 1 else null end),
-						MAX(`score`)
-				FROM	`jobs` 
-				WHERE	`user_id` = ?
-				AND		`problem_id` = ?
-			');
-			
-			if(!$stmt -> bind_param('ii', $UserID, $this -> ProblemID))
-				throw new Exception('MySQL parameter bind error ' . $stmt -> errno . ': ' . $stmt -> error);
+
 			
 			if(!$stmt -> execute())
 				throw new Exception('MySQL statement execution error ' . $stmt -> errno . ': ' . $stmt -> error);

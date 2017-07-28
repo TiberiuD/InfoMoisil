@@ -1,0 +1,20 @@
+{% include "class/snippets/header.twig" %}
+
+<h3>Vizualizare membri</h3>
+
+<ul class="collection with-header z-depth-3">
+    <li class="blue darken-2 white-text collection-header">
+        <h5><i class="material-icons">face</i> Membri</h5>
+    </li>
+
+    {% for Member in MembersInfo %}
+        <li class="collection-item">
+            {{ Member.Name }}
+            {% if Member.IsTeacher %}
+                <div class="secondary-content">Profesor</div>
+            {% else %}
+                <div class="secondary-content">Elev</div>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

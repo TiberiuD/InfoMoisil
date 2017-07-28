@@ -10,10 +10,45 @@ Target Server Type    : MYSQL
 Target Server Version : 50555
 File Encoding         : 65001
 
-Date: 2017-05-31 10:35:27
+Date: 2017-07-28 08:18:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for authentication_tokens
+-- ----------------------------
+DROP TABLE IF EXISTS `authentication_tokens`;
+CREATE TABLE `authentication_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expire_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for class_members
+-- ----------------------------
+DROP TABLE IF EXISTS `class_members`;
+CREATE TABLE `class_members` (
+  `class_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` enum('teacher','student') NOT NULL DEFAULT 'student',
+  PRIMARY KEY (`class_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for classes
+-- ----------------------------
+DROP TABLE IF EXISTS `classes`;
+CREATE TABLE `classes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text CHARACTER SET utf8 NOT NULL,
+  `access_key` text NOT NULL,
+  `creation_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for files
@@ -26,7 +61,30 @@ CREATE TABLE `files` (
   `hash` varchar(255) NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for homework_problems
+-- ----------------------------
+DROP TABLE IF EXISTS `homework_problems`;
+CREATE TABLE `homework_problems` (
+  `homework_id` int(11) NOT NULL,
+  `problem_id` int(11) NOT NULL,
+  PRIMARY KEY (`homework_id`,`problem_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for homeworks
+-- ----------------------------
+DROP TABLE IF EXISTS `homeworks`;
+CREATE TABLE `homeworks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) NOT NULL,
+  `name` text CHARACTER SET utf8 NOT NULL,
+  `deadline` date NOT NULL,
+  `published` enum('published','unpublished') NOT NULL DEFAULT 'unpublished',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for job_tests
@@ -42,7 +100,7 @@ CREATE TABLE `job_tests` (
   `output_file_id` int(11) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for jobs
@@ -61,7 +119,7 @@ CREATE TABLE `jobs` (
   `compiler_message` text,
   `score` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for notifications
@@ -74,7 +132,7 @@ CREATE TABLE `notifications` (
   `message` varchar(255) DEFAULT NULL,
   `read` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for permissions
@@ -86,7 +144,7 @@ CREATE TABLE `permissions` (
   `permission` varchar(255) NOT NULL,
   `arg1` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for private_messages
@@ -137,7 +195,7 @@ CREATE TABLE `problems` (
   `points` int(11) NOT NULL,
   `visible` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for users
@@ -153,4 +211,4 @@ CREATE TABLE `users` (
   `rank` enum('admin','teacher','student') NOT NULL DEFAULT 'student',
   `preffered_language` enum('c','cpp','pas') DEFAULT 'c',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;

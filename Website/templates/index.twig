@@ -3,7 +3,7 @@
 	<head>
 		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1.0" name="viewport">
-		<meta content="#B71C1C" name="theme-color">
+		<meta content="#01579B" name="theme-color">
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		
 		<title>{% block title %}{% endblock %} - {{ WebsiteInfo.title }}</title>
@@ -24,9 +24,9 @@
 	</head>
 	<body>
 		<div class="navbar-fixed">
-			<nav class="red darken-1" role="navigation">
+			<nav class="light-blue lighten-3" role="navigation">
 				<div class="nav-wrapper container">
-					<a class="brand-logo" href="?p=index" id="logo-container">InfoMoisil</a>
+					<a class="brand-logo" href="?p=index" id="logo-container"><img src="img/Infomoisil.png" /></a>
 					<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
 
@@ -67,7 +67,10 @@
 									</a>
 								</li>
 								<li>
-									<a href="?p=account&settings">Setări cont</a>
+									<a href="?p=account/class">Clasele mele</a>
+								</li>
+								<li>
+									<a href="?p=account/settings">Setări cont</a>
 								</li>
 								<li class="divider"></li>
 								<li>
@@ -144,7 +147,7 @@
 		</ul>
 					
 		<!-- Search box -->
-		<nav id="search-bar" class="red lighten-1 flat hide-on-med-and-down">
+		<nav id="search-bar" class="light-blue accent-2 flat hide-on-med-and-down">
 			<div class="nav-wrapper container">
 				<form>
 					<div class="input-field">
@@ -174,12 +177,13 @@
 							<label for="icon_password">Parolă</label>
 							<input id="icon_password" name="password" type="password" class="validate" length="30" required>
 						</div>
-					</div>
-					<div class="input-field">
-						<input type="checkbox" id="filled-in-box" checked="checked">
-						<label for="filled-in-box">Ține-mă minte</label>
+						<div class="input-field col s12">
+							<input id="filled-in-box" name="remember" type="checkbox" checked="checked">
+							<label for="filled-in-box">Ține-mă minte</label>
+						</div>
 					</div>
 				</div>
+
 				<div class="modal-footer">
 					<button class="btn-flat waves-effect waves-green" type="submit" name="loginForm">Conectare
 						<i class="material-icons right">send</i>

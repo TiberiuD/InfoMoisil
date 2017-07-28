@@ -6,14 +6,13 @@ set errorCodes = {
 } 
 %}
 
-
 {% block title %}Contul meu{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col s12">
                 <h1 class="orange-text">
-                    Contul meu
+                    {% block AccountTitle %}{% endblock %}
                 </h1>
                 <nav>
                     <div class="nav-wrapper light-blue">
@@ -42,22 +41,11 @@ set errorCodes = {
                 {% if LoggedIn %}
                     <div class="center">
                         <img src="{{ avatarURL }}" alt="" class="circle responsive-img z-depth-3">
-                        <h4>{{ Session.name }}</h4>
+                        <h3>{{ Session.name }}</h3>
                     </div>
+                    <div class="divider"></div>
                     <div class="row">
-                        <div class="col s12 l6">
-                            <div class="collection">
-                                <a class="collection-item"><i class="material-icons left red-text">group</i> Membru din: <span class="badge">16 ianuarie 2015</span></a>
-                                <a href="#" class="collection-item"><i class="material-icons left amber-text">grade</i> Exerciții rezolvate: <span class="badge">4</span></a>
-                                <a href="#" class="collection-item"><i class="material-icons left indigo-text">info</i> Fără notificări</a>
-                            </div>
-                        </div>
-                        <div class="col s12 l6">
-                            <div class="collection">
-                                <a class="collection-item"><i class="material-icons left red-text">star</i> Monede: <span class="badge">{{ Session.coins }}</span></a>
-                                <a href="#" class="collection-item"><i class="material-icons left amber-text">subject</i> Articole scrise: <span class="badge">1</span></a>
-                            </div>
-                        </div>
+                        {% block AccountContent %}{% endblock %}
                     </div>
                 {% endif %}
             </div>

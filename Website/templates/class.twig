@@ -1,0 +1,32 @@
+{% extends "index.twig" %}
+
+{% block title %}{{ ClassName }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="container">
+            <div class="col s12 l9">
+                {%
+                set SubPages = [
+                "default",
+                "newhomework",
+                "homework",
+                "viewhomeworks",
+                "members",
+                ]
+                %}
+                {% if pageAction in SubPages %}
+                    {% include "class/" ~ pageAction ~ ".twig" %}
+                {% else %}
+                    <p>Something went terribly wrong!</p>
+                {% endif %}
+            </div>
+
+
+            <div class="col s12 l3">
+                <br>
+                <br>
+                {% include "sidebar.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

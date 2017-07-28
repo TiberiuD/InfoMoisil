@@ -1,0 +1,90 @@
+{% extends "index.twig" %}
+
+{%
+set errorCodes = {
+91: 'Nu ați introdus codul de acces!',
+92: 'Codul de acces are un format incorect!',
+90: 'Eroare de transmitere a formularului!',
+93: 'Codul de acces este incorect!',
+}
+%}
+
+{% block title %}Intră într-o clasă{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="container">
+            <div class="col m12 l9">
+                <h1 class="red-text">Intră într-o clasă</h1>
+                <p>
+                    Ca profesor, o clasă îți permite să dai elevilor tăi teme și să supraveghezi felul
+                    în care aceștia o rezolvă. O unealtă foarte bună, care poate asigura un efort
+                    constant de lucru, elementar în buna învățare a elevului.
+                </p>
+
+                {% if CreateStatus is defined %}
+                    {% if CreateStatus == "OK" %}
+                        <div class="card horizontal green darken-3">
+                            <div class="card-stacked">
+                                <div class="card-content white-text">
+                                    <span class="card-title">Ai intrat cu succes!</span>
+                                    <p>
+                                        Ai intrat în clasă cu succes! Apasă pe butonul de mai jos pentru o privire
+                                        generală a acesteia.
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="?p=class&id={{ ClassID }}">Vezi clasă</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card horizontal red darken-3">
+                            <div class="card-stacked">
+                                <div class="card-content white-text">
+                                    <span class="card-title">Eroare!</span>
+                                    <p><strong>Nu ai putut fi adăugat în clasă deoarece</strong>:</p>
+                                    <ul>
+                                        {% for Error in CreateErrorArray %}
+                                            <li>{{ errorCodes[Error] }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if (not CreateStatus is defined) or ((CreateStatus is defined) and CreateStatus != "OK")  %}
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <div class="cyan lighten-5 card">
+                                <div class="card-content">
+                                    <span class="card-title">Intră într-o clasă</span>
+                                    <p>Introdu mai jos codul de acces pe care l-ai primit de la profesorul tău.</p>
+                                    <p>Codul introdus trebuie să respecte modelul de mai jos.</p>
+                                    <form action="?p=joinclass" method="POST">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <i class="material-icons blue-text prefix">verified_user</i>
+                                                <input id="access_key" name="access_key" type="text" class="validate" placeholder="1234-1234-1234-1234" pattern="\d{4}-?\d{4}-?\d{4}-?\d{4}">
+                                                <label for="access_key">Cod de acces</label>
+                                            </div>
+                                        </div>
+                                        <button class="btn green waves-effect waves-light" type="submit" name="joinClassForm">Continuă
+                                            <i class="material-icons right">send</i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col m12 l3">
+                {% include "sidebar.twig" %}
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+{% endblock %}

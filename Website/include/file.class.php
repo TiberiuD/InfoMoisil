@@ -68,7 +68,7 @@
 										. "NOW());");
 			
 			if(!$query)
-				throw new Exception('Database query error: ' . $DBCon -> error);
+				throw new Exception('Database query error: ' . $this->DBCon -> error);
 			
 			$this -> FileID = $this -> DBCon -> insert_id;
 			

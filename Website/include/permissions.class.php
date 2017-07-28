@@ -82,7 +82,7 @@
 			$stmt -> store_result();
 			
 			if($stmt -> affected_rows != 1)
-				throw new Exception('The number of inserted rows is not 1: ' . $stmt -> affected_rows);
+				throw new Exception('The number of affected rows is not 1: ' . $stmt -> affected_rows);
 			
 			$stmt -> close();
 		}
@@ -124,12 +124,12 @@
 			if($this -> User -> isAdmin())
 				return true;
 			
-			if($this -> hasPermission(UserPermissionManager::PERM_VIEW_PROBLEM, $FileID))
+			if($this -> hasPermission(UserPermissionManager::PERM_VIEW_PROBLEM, $ProblemID))
 				return true;
 			
 			$Problem = new Problem($this -> DBCon);
 			$Problem -> setProblemID($ProblemID);
-			$retrieve = $problem -> retrieveFromDB();
+			$retrieve = $Problem -> retrieveFromDB();
 			
 			if($retrieve === true)
 				return $Problem -> isVisible();
@@ -142,5 +142,15 @@
 				return true;
 			
 			return $this -> hasPermission(UserPermissionManager::PERM_VIEW_FILE, $FileID);
+		}
+
+		public function canManageClass($ClassID) {
+            if($this -> User -> isAdmin())
+                return true;
+
+            $Class = new StudentClass($this->DBCon);
+            $Class->SetID($ClassID);
+
+            return $Class->IsTeacher($this->User);
 		}
 	}

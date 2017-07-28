@@ -1,0 +1,88 @@
+{% include "class/snippets/header.twig" %}
+
+<div class="card horizontal green darken-3">
+    <div class="card-stacked">
+        <div class="card-content white-text">
+            <span class="card-title">Adaugă persoane</span>
+            <p>
+                Dacă dorești să adaugi persoane in aceasta clasă, partajează codul de acces de mai jos:
+            </p>
+            <h4 class="center-align">
+                {{ ClassAccessKey }}
+            </h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m6">
+        <div class="card orange darken-4">
+            <div class="card-content white-text">
+                <span class="card-title"><i class="material-icons">group</i> Membrii clasei</span>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mattis
+                    gravida erat vel semper. Sed ut lorem sodales ipsum porttitor pulvinar sit
+                    amet ac mauris. Nam quis est nec velit convallis facilisis sit amet nec purus.
+                </p>
+            </div>
+            <div class="card-action">
+                <a href="?p=class&id={{ ClassID }}&action=members" class="white-text">Vezi membrii clasei</a>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m6">
+        <div class="card green darken-4">
+            <div class="card-content white-text">
+                <span class="card-title"><i class="material-icons">assignment</i> Temele clasei</span>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mattis
+                    gravida erat vel semper. Sed ut lorem sodales ipsum porttitor pulvinar sit
+                    amet ac mauris. Nam quis est nec velit convallis facilisis sit amet nec purus.
+                </p>
+            </div>
+            <div class="card-action">
+                <a href="?p=class&id={{ ClassID }}&action=viewhomeworks">Vezi temele clasei</a>
+            </div>
+        </div>
+    </div>
+    {% if ClassManagePermission %}
+        <div class="col s12 m6">
+            <div class="cyan lighten-5 card">
+                <div class="card-content">
+                    <span class="card-title">Dă o temă nouă</span>
+                    <p>Introdu un nume și un termen limită pentru noua temă.</p>
+                    <form action="?p=class&id={{ ClassID }}&action=newhomework" method="POST">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons orange-text prefix">label_outline</i>
+                                <input id="name" name="name" type="text" class="validate">
+                                <label for="name">Nume</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons red-text prefix">date_range</i>
+                                <input id="deadline" name="deadline" type="text" class="datepicker">
+                                <label for="deadline">Termen limită</label>
+                            </div>
+                        </div>
+                        <button class="btn green waves-effect waves-light" type="submit" name="newHomeworkForm">Continuă
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                today: 'Astăzi',
+                clear: 'Șterge',
+                close: 'OK',
+                closeOnSelect: false, // Close upon selecting a date,
+                format: 'dd.mm.yyyy',
+                formatSubmit: 'dd-mm-yyyy',
+                min: true
+            });
+        </script>
+    {% endif %}
+</div>
